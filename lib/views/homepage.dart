@@ -1,8 +1,10 @@
+import 'package:dadd/views/account_screen.dart';
 import 'package:dadd/views/expContainer.dart';
 import 'package:dadd/views/friendpage.dart';
 import 'package:dadd/views/historypage.dart';
 import 'package:dadd/views/menubutton.dart';
 import 'package:dadd/views/rankingpage.dart';
+import 'package:dadd/views/room_game_screen.dart';
 import 'package:dadd/views/solo_play.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +33,13 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.blue,
         title: const Text('Trang Chủ'),
         centerTitle: true,
-        leading: const Icon(Icons.person),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AccountScreen()));
+          },
+          icon: const Icon(Icons.person),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -67,7 +75,12 @@ class HomePage extends StatelessWidget {
                 ),
                 MenuButton(
                   text: 'Chơi Xếp Hạng',
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const RoomGameScreen()));
+                  },
                 ),
                 //MenuButton(text: 'Bạn Bè'),
                 MenuButton(
