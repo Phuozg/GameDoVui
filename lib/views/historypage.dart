@@ -1,38 +1,5 @@
 import 'package:flutter/material.dart';
 
-// class Historypage extends StatelessWidget {
-//   const Historypage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: Scaffold(
-//         appBar: AppBar(title: const Text('Custom Dialog Example')),
-//         body: Center(
-//           child: ElevatedButton(
-//             onPressed: () => showCustomDialog(context),
-//             child: const Text('Show Dialog'),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-
-//   void showCustomDialog(BuildContext context) {
-//     showDialog(
-//       context: context,
-//       builder: (BuildContext context) {
-//         return Dialog(
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(20),
-//           ),
-//           child: CustomDialogContent(),
-//         );
-//       },
-//     );
-//   }
-// }
-
 class CustomDialogContent extends StatefulWidget {
   @override
   _CustomDialogContentState createState() => _CustomDialogContentState();
