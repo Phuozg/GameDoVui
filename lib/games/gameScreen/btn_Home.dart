@@ -1,3 +1,4 @@
+import 'package:dadd/views/homepage.dart';
 import 'package:flutter/material.dart';
 
 class btn_Home extends StatefulWidget {
@@ -27,8 +28,10 @@ class _btn_HomeState extends State<btn_Home> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                // Add action to navigate back to the home screen here
+                 Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            ); 
               },
               child: const Text(
                 'Xác nhận',
