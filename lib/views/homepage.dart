@@ -1,3 +1,5 @@
+import 'package:dadd/games/gameScreen/game_Sceen.dart';
+import 'package:dadd/games/selectionScreen/chon_Screen.dart';
 import 'package:dadd/views/account_screen.dart';
 import 'package:dadd/views/expContainer.dart';
 import 'package:dadd/views/friendpage.dart';
@@ -89,7 +91,7 @@ class HomePage extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SoloPlay()),
+                      MaterialPageRoute(builder: (context) => const slc_Screen()),
                     );
                   },
                 ),

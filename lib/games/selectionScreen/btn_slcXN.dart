@@ -1,3 +1,4 @@
+import 'package:dadd/games/gameScreen/game_Sceen.dart';
 import 'package:flutter/material.dart';
 
 class btn_slcXN extends StatefulWidget {
@@ -11,7 +12,11 @@ class _btn_slcXNState extends State<btn_slcXN> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => gameScreen() ));
+                },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   child: Text(

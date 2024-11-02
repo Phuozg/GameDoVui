@@ -1,4 +1,5 @@
 import 'package:dadd/games/gameScreen/game_Sceen.dart';
+import 'package:dadd/views/homepage.dart';
 import 'package:flutter/material.dart';
 
 
@@ -48,7 +49,7 @@ void _showConfirmationDialogTC(BuildContext context) {
             onPressed: () {
               Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => gameScreen()),
+              MaterialPageRoute(builder: (context) => HomePage()),
             ); // Navigates back to home
             },
           ),
