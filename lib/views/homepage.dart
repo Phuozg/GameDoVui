@@ -29,6 +29,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
       appBar: AppBar(
         backgroundColor: Colors.blue,
         title: const Text('Trang Chủ'),
@@ -47,23 +48,42 @@ class HomePage extends StatelessWidget {
               icon: const Icon(Icons.emoji_events),
               onPressed: () {
                 Navigator.push(
+
                   context,
-                  MaterialPageRoute(builder: (context) => RankingPage()),
-                );
-              },
-            ),
+                  MaterialPageRoute(
+                      builder: (context) => const AccountScreen()));
+            },
+            icon: const Icon(Icons.person),
           ),
-        ],
-      ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
-        child: Column(
-          children: [
-            const Expcontainer(),
-            const SizedBox(height: 30),
-            // Buttons
-            Column(
+          actions: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: IconButton(
+                icon: const Icon(Icons.emoji_events),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RankingPage()),
+                  );
+                },
+              ),
+            ),
+          ],
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/image/background.jpg'),
+                  fit: BoxFit.cover)),
+          child: Container(
+            padding:
+                const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
+            child: Column(
               children: [
+
+               const Expcontainer(),
+                const SizedBox(height: 30),
+               
                 MenuButton(
                   text: 'Chơi Luyện Tập',
                   onPressed: () {
@@ -103,96 +123,14 @@ class HomePage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: CustomDialogContent(),
+
                           );
-                        },
-                      );
-                      // context: context,
-                      // builder: (BuildContext context) {
-                      //   return Dialog(
-                      //     shape: RoundedRectangleBorder(
-                      //       borderRadius: BorderRadius.circular(20),
-                      //     ),
-                      //     child: Container(
-                      //       width: 300,
-                      //       height: 200,
-                      //       padding: const EdgeInsets.all(16),
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         mainAxisSize: MainAxisSize.min,
-                      //         children: [
-                      //           const Text(
-                      //             'Lịch sử chơi',
-                      //             style: TextStyle(
-                      //               fontSize: 18,
-                      //               fontWeight: FontWeight.bold,
-                      //             ),
-                      //           ),
-                      //           const SizedBox(height: 16),
-                      //           const Row(
-                      //             mainAxisAlignment:
-                      //                 MainAxisAlignment.spaceBetween,
-                      //             children: [
-                      //               Expanded(
-                      //                 child: Column(
-                      //                   children: [
-                      //                     Text(
-                      //                       'Chơi luyện tập',
-                      //                       style: TextStyle(
-                      //                         fontSize: 16,
-                      //                         color: Colors.black,
-                      //                         fontWeight: FontWeight.bold,
-                      //                       ),
-                      //                     ),
-                      //                     Divider(
-                      //                       color: Colors.black,
-                      //                       thickness: 1,
-                      //                       height: 1,
-                      //                     ),
-                      //                   ],
-                      //                 ),
-                      //               ),
-                      //               Expanded(
-                      //                 child: Center(
-                      //                   child: Text(
-                      //                     'Chơi nhiều người',
-                      //                     style: TextStyle(
-                      //                       fontSize: 16,
-                      //                       color: Colors.grey,
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //           const SizedBox(height: 16),
-                      //           const Spacer(),
-                      //           Center(
-                      //             child: ElevatedButton(
-                      //               onPressed: () {
-                      //                 Navigator.of(context).pop();
-                      //               },
-                      //               style: ElevatedButton.styleFrom(
-                      //                 backgroundColor: Colors.blue,
-                      //                 shape: RoundedRectangleBorder(
-                      //                   borderRadius:
-                      //                       BorderRadius.circular(8),
-                      //                 ),
-                      //               ),
-                      //               child: const Text('Quay lại'),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   );
-                      //},
-                      //);
-                    })
+                        })
+                  ],
+                ),
               ],
             ),
-          ],
-        ),
-      ),
-    );
+          ),
+        ));
   }
 }
