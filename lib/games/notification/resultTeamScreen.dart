@@ -24,32 +24,34 @@ class _rsTeamscreenState extends State<rsTeamscreen> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width * 0.9,
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.teal[200],
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: rsBoard(),
+              child: const rsBoard(),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.blue,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+              ),
               child: Text('Chơi Lại'),
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Colors.white,
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {},
-              child: Text('Quay về màn hình chính'),
               style: ElevatedButton.styleFrom(
                 foregroundColor: Colors.white,
                 backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
               ),
+              child: Text('Quay về màn hình chính'),
             ),
           ],
         ))

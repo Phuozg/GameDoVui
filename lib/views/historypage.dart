@@ -1,6 +1,22 @@
 import 'package:flutter/material.dart';
 
+class Historypage extends StatelessWidget {
+  const Historypage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(title: const Text('Custom Dialog Content')),
+        body: CustomDialogContent(),
+      ),
+    );
+  }
+}
+
 class CustomDialogContent extends StatefulWidget {
+  const CustomDialogContent({super.key});
+
   @override
   _CustomDialogContentState createState() => _CustomDialogContentState();
 }
@@ -16,9 +32,7 @@ class _CustomDialogContentState extends State<CustomDialogContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 300,
-      height: 200,
+    return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

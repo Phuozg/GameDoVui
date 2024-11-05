@@ -22,27 +22,31 @@ class _slc_numbersState extends State<slc_numbers> {
   @override
   Widget build(BuildContext context) {
     return Row(
-      
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-    
-        Text(
+        const Text(
           'Số Câu Hỏi',
-          style: TextStyle(decoration: TextDecoration.none,
-              fontSize: 24, fontWeight: FontWeight.bold, color: Colors.orange),
+          style: TextStyle(
+              decoration: TextDecoration.none,
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: Colors.orange),
         ),
-        SizedBox(width: 10),
+        const SizedBox(width: 10),
         GestureDetector(
           onTap: _changeQuestionCount,
           child: Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
               color: Colors.blue.shade900,
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
               '$_questionCount',
-              style: TextStyle(fontSize: 24, color: Colors.white, decoration: TextDecoration.none),
+              style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.white,
+                  decoration: TextDecoration.none),
             ),
           ),
         ),

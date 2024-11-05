@@ -9,7 +9,7 @@ class btn_Home extends StatefulWidget {
 }
 
 class _btn_HomeState extends State<btn_Home> {
-   void _showConfirmationDialog(BuildContext context) {
+  void _showConfirmationDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -28,10 +28,10 @@ class _btn_HomeState extends State<btn_Home> {
           actions: [
             TextButton(
               onPressed: () {
-                 Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            ); 
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const HomePage()),
+                );
               },
               child: const Text(
                 'Xác nhận',
@@ -52,6 +52,7 @@ class _btn_HomeState extends State<btn_Home> {
       },
     );
   }
+
   @override
   Widget build(BuildContext context) {
     return ClipRRect(

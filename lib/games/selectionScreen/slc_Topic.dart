@@ -1,7 +1,6 @@
 import 'package:dadd/games/selectionScreen/topic_Btn.dart';
 import 'package:flutter/material.dart';
 
-
 class slc_Topic extends StatefulWidget {
   const slc_Topic({super.key});
 
@@ -34,7 +33,7 @@ class _slc_TopicState extends State<slc_Topic> {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.9,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.green.shade200,
         borderRadius: BorderRadius.circular(15),
@@ -42,23 +41,27 @@ class _slc_TopicState extends State<slc_Topic> {
       ),
       child: Column(
         children: [
-          Text(
+          const Text(
             'Chọn Chủ Đề',
             style: TextStyle(
-                fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black, decoration: TextDecoration.none),
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                decoration: TextDecoration.none),
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
           SizedBox(
-           height: MediaQuery.of(context).size.height * 0.6, // 60% of screen height
+            height: MediaQuery.of(context).size.height *
+                0.6, // 60% of screen height
             child: Container(
               decoration: BoxDecoration(
                 color: Colors.teal.shade300,
                 borderRadius: BorderRadius.circular(15),
                 border: Border.all(color: Colors.black),
               ),
-              padding: EdgeInsets.all(10),
+              padding: const EdgeInsets.all(10),
               child: GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,

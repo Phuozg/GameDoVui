@@ -4,7 +4,6 @@ import 'package:dadd/games/gameScreen/clock.dart';
 import 'package:dadd/games/gameScreen/question.dart';
 import 'package:flutter/material.dart';
 
-
 class gameScreen extends StatefulWidget {
   const gameScreen({super.key});
 
@@ -35,7 +34,7 @@ class _gameScreenState extends State<gameScreen> {
         Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
@@ -66,7 +65,7 @@ class _gameScreenState extends State<gameScreen> {
                 ),
               ],
             ),
-            Question(ques: 'abc'),
+            const Question(ques: 'abc'),
             SizedBox(
               height: 250, // Set height as needed
               width: MediaQuery.of(context).size.width * 0.9,
@@ -93,7 +92,7 @@ class _gameScreenState extends State<gameScreen> {
                 },
               ),
             ),
-            btn_XN(),
+            const btn_XN(),
           ],
         )
       ],

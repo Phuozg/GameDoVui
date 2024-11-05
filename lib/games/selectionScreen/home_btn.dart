@@ -2,7 +2,6 @@ import 'package:dadd/games/gameScreen/game_Sceen.dart';
 import 'package:dadd/views/homepage.dart';
 import 'package:flutter/material.dart';
 
-
 class trangcu_btn extends StatefulWidget {
   const trangcu_btn({super.key});
 
@@ -37,20 +36,20 @@ void _showConfirmationDialogTC(BuildContext context) {
     context: context,
     builder: (BuildContext context) {
       return AlertDialog(
-        title: Text("Quay lại trang chủ?"),
-        content: Text("Bạn có chắc chắn muốn quay lại trang chủ không?"),
+        title: const Text("Quay lại trang chủ?"),
+        content: const Text("Bạn có chắc chắn muốn quay lại trang chủ không?"),
         actions: [
           TextButton(
-            child: Text("Không"),
+            child: const Text("Không"),
             onPressed: () => Navigator.of(context).pop(), // Closes dialog
           ),
           TextButton(
-            child: Text("Có"),
+            child: const Text("Có"),
             onPressed: () {
               Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            ); // Navigates back to home
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+              ); // Navigates back to home
             },
           ),
         ],

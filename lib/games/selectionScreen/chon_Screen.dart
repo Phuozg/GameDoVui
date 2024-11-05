@@ -4,7 +4,6 @@ import 'package:dadd/games/selectionScreen/slc_Topic.dart';
 import 'package:dadd/games/selectionScreen/slc_number.dart';
 import 'package:flutter/material.dart';
 
-
 class slc_Screen extends StatefulWidget {
   const slc_Screen({super.key});
 
@@ -35,12 +34,17 @@ class _slc_ScreenState extends State<slc_Screen> {
           'assets/image/background.jpg',
           fit: BoxFit.cover,
         )),
-        Column(
+        const Column(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              children: [SizedBox(width: 20,), trangcu_btn()],
+              children: [
+                SizedBox(
+                  width: 20,
+                ),
+                trangcu_btn()
+              ],
             ),
             slc_numbers(),
             slc_Topic(),

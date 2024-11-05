@@ -12,25 +12,23 @@ class _btn_slcXNState extends State<btn_slcXN> {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => gameScreen() ));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  child: Text(
-                    'Xác Nhận',
-                    style: TextStyle(fontSize: 18, color: Colors.white),
-                  
-                  ),
-                ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-              );
+      onPressed: () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const gameScreen()));
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+        child: Text(
+          'Xác Nhận',
+          style: TextStyle(fontSize: 18, color: Colors.white),
+        ),
+      ),
+    );
   }
 }
