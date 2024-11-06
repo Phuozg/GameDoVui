@@ -1,10 +1,17 @@
+import 'package:dadd/phuong/controllers/auth.dart';
+import 'package:dadd/phuong/controllers/profile_controller.dart';
+import 'package:dadd/views/expContainer.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final authentication = Get.put(Authentication());
+    final profileController = Get.put(ProfileController());
     showEditNameDialog() {
       showDialog(
           context: context,
@@ -126,7 +133,9 @@ class AccountScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                authentication.logout();
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue),
                               child: const Text(
@@ -171,104 +180,151 @@ class AccountScreen extends StatelessWidget {
                   image: AssetImage('assets/image/background.jpg'),
                   fit: BoxFit.cover)),
           child: Container(
-            padding: const EdgeInsets.fromLTRB(50, 150, 50, 100),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Column(
+              padding: const EdgeInsets.fromLTRB(50, 100, 50, 100),
+              child: Obx(() {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const CircleAvatar(
-                      backgroundImage: AssetImage('assets/image/avatar.jpg'),
-                      minRadius: 50,
-                      maxRadius: 100,
+                    const Expcontainer(),
+                    Column(
+                      children: [
+                        Builder(builder: (context) {
+                          if (profileController.user.value.Avatar.isEmpty) {
+                            return const CircleAvatar(
+                              backgroundImage:
+                                  AssetImage('assets/image/avatar.jpg'),
+                              minRadius: 50,
+                              maxRadius: 100,
+                            );
+                          } else {
+                            return CircleAvatar(
+                              backgroundImage: NetworkImage(
+                                  profileController.user.value.Avatar),
+                              minRadius: 50,
+                              maxRadius: 100,
+                            );
+                          }
+                        }),
+                        ElevatedButton(
+                            onPressed: () {
+                              onChangeAvatar();
+                            },
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10))),
+                            child: const Text(
+                              'Sửa',
+                              style: TextStyle(color: Colors.black),
+                            )),
+                      ],
                     ),
-                    ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        child: const Text(
-                          'Sửa',
-                          style: TextStyle(color: Colors.black),
-                        )),
+                    Container(
+                      decoration: BoxDecoration(border: Border.all(width: 1)),
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Tên người dùng',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                profileController.user.value.Name,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showEditNameDialog();
+                            },
+                            icon: const Icon(Icons.edit),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(border: Border.all(width: 1)),
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                'Tài khoản',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                profileController.user.value.UserName,
+                                style: const TextStyle(fontSize: 20),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(border: Border.all(width: 1)),
+                      margin: const EdgeInsets.only(top: 8),
+                      padding: const EdgeInsets.all(8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Mật khẩu',
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                '************',
+                                style: TextStyle(fontSize: 20),
+                              )
+                            ],
+                          ),
+                          IconButton(
+                            onPressed: () {
+                              showEditPasswordDialog();
+                            },
+                            icon: const Icon(Icons.edit),
+                          )
+                        ],
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 40),
+                      child: ElevatedButton(
+                          onPressed: () {
+                            showLogOutDialog();
+                          },
+                          style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              minimumSize: const Size(200, 40)),
+                          child: const Text(
+                            'Đăng xuất',
+                            style: TextStyle(color: Colors.white, fontSize: 20),
+                          )),
+                    )
                   ],
-                ),
-                Container(
-                  decoration: BoxDecoration(border: Border.all(width: 1)),
-                  margin: const EdgeInsets.only(top: 8),
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Tên người dùng',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Text(
-                            'Toàn',
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showEditNameDialog();
-                        },
-                        icon: const Icon(Icons.edit),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  decoration: BoxDecoration(border: Border.all(width: 1)),
-                  margin: const EdgeInsets.only(top: 8),
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Mật khẩu',
-                            style: TextStyle(color: Colors.grey),
-                          ),
-                          Text(
-                            '************',
-                            style: TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ),
-                      IconButton(
-                        onPressed: () {
-                          showEditPasswordDialog();
-                        },
-                        icon: const Icon(Icons.edit),
-                      )
-                    ],
-                  ),
-                ),
-                Container(
-                  margin: const EdgeInsets.only(top: 40),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        showLogOutDialog();
-                      },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.red,
-                          minimumSize: const Size(200, 40)),
-                      child: const Text(
-                        'Đăng xuất',
-                        style: TextStyle(color: Colors.white, fontSize: 20),
-                      )),
-                )
-              ],
-            ),
-          ),
+                );
+              })),
         ));
+  }
+
+  Future<void> onChangeAvatar() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) {
+      return;
+    }
   }
 }

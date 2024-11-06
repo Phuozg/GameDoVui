@@ -1,4 +1,4 @@
-import 'package:dadd/views/waiting_room_screen.dart';
+import 'package:dadd/phuong/views/waiting_room_screen.dart';
 import 'package:flutter/material.dart';
 
 Widget roomTemplate(BuildContext context, String roomName, int quantityPlayer,

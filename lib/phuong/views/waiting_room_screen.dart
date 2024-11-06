@@ -1,5 +1,5 @@
-import 'package:dadd/views/account_screen.dart';
-import 'package:dadd/views/player_template.dart';
+import 'package:dadd/phuong/views/account_screen.dart';
+import 'package:dadd/phuong/views/player_template.dart';
 import 'package:flutter/material.dart';
 
 class WaitingRoomScreen extends StatelessWidget {
