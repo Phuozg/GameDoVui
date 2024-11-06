@@ -1,12 +1,12 @@
 import 'package:dadd/firebase_options.dart';
 import 'package:dadd/games/selectionScreen/chon_Screen.dart';
-import 'package:dadd/views/account_screen.dart';
+import 'package:dadd/phuong/views/account_screen.dart';
 import 'package:dadd/views/expContainer.dart';
 import 'package:dadd/views/friendpage.dart';
 import 'package:dadd/views/historypage.dart';
 import 'package:dadd/views/menubutton.dart';
 import 'package:dadd/views/rankingpage.dart';
-import 'package:dadd/views/room_game_screen.dart';
+import 'package:dadd/phuong/views/room_game_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 

@@ -1,12 +1,22 @@
-import 'package:dadd/views/account_screen.dart';
-import 'package:dadd/views/room_template.dart';
+import 'package:dadd/phuong/controllers/question_set_controller.dart';
+import 'package:dadd/phuong/controllers/room_controller.dart';
+import 'package:dadd/phuong/controllers/topic_controller.dart';
+import 'package:dadd/phuong/models/room_model.dart';
+import 'package:dadd/phuong/models/topic_model.dart';
+import 'package:dadd/phuong/views/account_screen.dart';
+import 'package:dadd/phuong/views/room_template.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class RoomGameScreen extends StatelessWidget {
   const RoomGameScreen({super.key});
   @override
   Widget build(BuildContext context) {
-    showSearchRoomDialog() {
+    final RoomController roomController = Get.put(RoomController());
+    final TopicController topicController = Get.put(TopicController());
+    final QuestionSetController questionSetController =
+        Get.put(QuestionSetController());
+    showSearchRoomDialog(BuildContext context) {
       showDialog(
           context: context,
           builder: (_) => AlertDialog(
@@ -50,14 +60,9 @@ class RoomGameScreen extends StatelessWidget {
               ));
     }
 
-    showCreateRoomDialog() {
-      List<String> listTopic = <String>[
-        'Bóng đá',
-        'Lịch sử',
-        'Khoa học',
-        'Địa lý'
-      ];
-      String dropdownTopicValue = listTopic.first;
+    showCreateRoomDialog(BuildContext context) {
+      List<TopicModel> topics = topicController.topics;
+      TopicModel selectedTopic = topics[0];
       List<int> listQuantity = [10, 20, 30];
       int dropdownQuantityValue = listQuantity.first;
       showDialog(
@@ -72,29 +77,27 @@ class RoomGameScreen extends StatelessWidget {
                       children: [
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 2,
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: dropdownTopicValue,
-                            icon: const Icon(Icons.arrow_downward),
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.black),
-                            underline: Container(
-                              height: 2,
-                              color: Colors.black54,
-                            ),
-                            onChanged: (String? value) {
-                              setState(() {
-                                dropdownTopicValue = value!;
-                              });
-                            },
-                            items: listTopic
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
+                          child: DropdownButton<TopicModel>(
+                              isExpanded: true,
+                              value: selectedTopic,
+                              icon: const Icon(Icons.arrow_downward),
+                              elevation: 16,
+                              style: const TextStyle(color: Colors.black),
+                              underline: Container(
+                                height: 2,
+                                color: Colors.black54,
+                              ),
+                              onChanged: (TopicModel? value) {
+                                setState(() {
+                                  selectedTopic = value!;
+                                });
+                              },
+                              items: topics.map((TopicModel topic) {
+                                return DropdownMenuItem<TopicModel>(
+                                  value: topic,
+                                  child: Text(topic.TopicName),
+                                );
+                              }).toList()),
                         ),
                         SizedBox(
                           width: MediaQuery.of(context).size.width / 2,
@@ -126,7 +129,12 @@ class RoomGameScreen extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  roomController.createRoom(
+                                      selectedTopic.ID,
+                                      dropdownQuantityValue,
+                                      'yOBUdZkydGWxK69Ktyf1');
+                                },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue),
                                 child: const Text(
@@ -179,19 +187,30 @@ class RoomGameScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: MediaQuery.of(context).size.height / 2,
-                child: ListView(
-                  children: [
-                    roomTemplate(context, '1234', 3, 10, 'Lịch sử'),
-                    roomTemplate(context, '34AC', 2, 30, 'Bóng đá'),
-                    roomTemplate(context, 'AD99', 4, 20, 'Địa lý'),
-                    roomTemplate(context, '00DC', 1, 20, 'Khoa học')
-                  ],
-                ),
-              ),
+                  height: MediaQuery.of(context).size.height / 2,
+                  child: Obx(() {
+                    if (roomController.rooms.isEmpty) {
+                      return const Center(
+                        child: Text('Không có dữ liệu'),
+                      );
+                    }
+                    return ListView.builder(
+                      itemCount: roomController.rooms.length,
+                      itemBuilder: (_, index) {
+                        RoomModel room = roomController.rooms[index];
+                        return roomTemplate(
+                            context,
+                            room.Code,
+                            3,
+                            questionSetController
+                                .getQuantityQuestion(room.IDQuestionSet),
+                            topicController.getTopicName(room.IDTopic));
+                      },
+                    );
+                  })),
               ElevatedButton(
                   onPressed: () {
-                    showSearchRoomDialog();
+                    showSearchRoomDialog(context);
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
@@ -202,7 +221,7 @@ class RoomGameScreen extends StatelessWidget {
                   )),
               ElevatedButton(
                   onPressed: () {
-                    showCreateRoomDialog();
+                    showCreateRoomDialog(context);
                   },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.blue,
