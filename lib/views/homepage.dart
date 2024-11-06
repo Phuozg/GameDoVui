@@ -31,26 +31,13 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
-      appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: const Text('Trang Chủ'),
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const AccountScreen()));
-          },
-          icon: const Icon(Icons.person),
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: IconButton(
-              icon: const Icon(Icons.emoji_events),
-              onPressed: () {
-                Navigator.push(
-
+        appBar: AppBar(
+          backgroundColor: Colors.blue,
+          title: const Text('Trang Chủ'),
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const AccountScreen()));
@@ -82,16 +69,16 @@ class HomePage extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
             child: Column(
               children: [
-
-               const Expcontainer(),
+                const Expcontainer(),
                 const SizedBox(height: 30),
-               
+
                 MenuButton(
                   text: 'Chơi Luyện Tập',
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const slc_Screen()),
+                      MaterialPageRoute(
+                          builder: (context) => const slc_Screen()),
                     );
                   },
                 ),
@@ -115,9 +102,9 @@ class HomePage extends StatelessWidget {
                   },
                 ),
                 MenuButton(
-                    text: 'Xem Lịch Sử Chơi',
-                    onPressed: () {
-                      showDialog(
+                  text: 'Xem Lịch Sử Chơi',
+                  onPressed: () {
+                    showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return Dialog(
@@ -125,10 +112,9 @@ class HomePage extends StatelessWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: CustomDialogContent(),
-
                           );
-                        })
-                  ],
+                        });
+                  },
                 ),
               ],
             ),
