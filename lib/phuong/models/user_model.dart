@@ -8,6 +8,7 @@ class UserModel {
   String Avatar;
   int Exp;
   Timestamp CreatedAt;
+  bool Role;
   UserModel(
       {required this.ID,
       required this.UserName,
@@ -15,7 +16,8 @@ class UserModel {
       required this.Name,
       required this.Avatar,
       required this.Exp,
-      required this.CreatedAt});
+      required this.CreatedAt,
+      required this.Role});
   static UserModel empty() => UserModel(
       ID: '',
       UserName: '',
@@ -23,7 +25,8 @@ class UserModel {
       Name: '',
       Avatar: '',
       Exp: 0,
-      CreatedAt: Timestamp.now());
+      CreatedAt: Timestamp.now(),
+      Role: false);
 
   factory UserModel.fromSnapshot(DocumentSnapshot<Map<String, dynamic>> doc) {
     if (doc.data() != null) {
@@ -35,7 +38,8 @@ class UserModel {
           Name: data['Name'] ?? '',
           Avatar: data['Avatar'] ?? '',
           Exp: data['Exp'] ?? 0,
-          CreatedAt: data['CreatedAt'] ?? Timestamp.now());
+          CreatedAt: data['CreatedAt'] ?? Timestamp.now(),
+          Role: data['Role'] ?? false);
     } else {
       return UserModel.empty();
     }
@@ -50,6 +54,7 @@ class UserModel {
         Name: data['Name'] ?? '',
         Avatar: data['Avatar'] ?? '',
         Exp: data['Exp'] ?? 0,
-        CreatedAt: data['CreatedAt'] ?? Timestamp.now());
+        CreatedAt: data['CreatedAt'] ?? Timestamp.now(),
+        Role: data['Role'] ?? false);
   }
 }

@@ -1,29 +1,28 @@
+import 'package:dadd/phuong/controllers/room_controller.dart';
+import 'package:dadd/phuong/models/user_model.dart';
 import 'package:dadd/phuong/views/account_screen.dart';
 import 'package:dadd/phuong/views/player_template.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class WaitingRoomScreen extends StatelessWidget {
   const WaitingRoomScreen(
       {super.key,
       required this.roomName,
-      required this.quantityPlayer,
       required this.quantityQuestion,
-      required this.topic});
+      required this.topic,
+      required this.roomID});
   final String roomName;
-  final int quantityPlayer;
   final int quantityQuestion;
   final String topic;
+  final String roomID;
+
   @override
   Widget build(BuildContext context) {
-    List<String> listTopic = <String>[
-      'Bóng đá',
-      'Lịch sử',
-      'Khoa học',
-      'Địa lý'
-    ];
-    String dropdownTopicValue = topic;
     List<int> listQuantity = [10, 20, 30];
     int dropdownQuantityValue = quantityQuestion;
+    final roomController = Get.put(RoomController());
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -63,36 +62,6 @@ class WaitingRoomScreen extends StatelessWidget {
                         return SizedBox(
                           width: MediaQuery.of(context).size.width / 3,
                           height: 30,
-                          child: DropdownButton<String>(
-                            isExpanded: true,
-                            value: dropdownTopicValue,
-                            elevation: 16,
-                            style: const TextStyle(color: Colors.black),
-                            onChanged: (String? value) {
-                              setState(() {
-                                dropdownTopicValue = value!;
-                              });
-                            },
-                            items: listTopic
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        );
-                      })),
-                  Container(
-                      padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(width: 1),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: StatefulBuilder(builder: (context, setState) {
-                        return SizedBox(
-                          width: MediaQuery.of(context).size.width / 3,
-                          height: 30,
                           child: DropdownButton<int>(
                             isExpanded: true,
                             value: dropdownQuantityValue,
@@ -116,16 +85,10 @@ class WaitingRoomScreen extends StatelessWidget {
                 ],
               ),
               SizedBox(
-                height: MediaQuery.of(context).size.height / 2.5,
-                child: ListView(
-                  children: [
-                    playerTemplate(context, 'Toàn', 3, '1'),
-                    playerTemplate(context, 'Mi', 2, '32'),
-                    playerTemplate(context, 'Phú', 2, '3'),
-                    playerTemplate(context, '', 0, '')
-                  ],
-                ),
-              ),
+                  height: MediaQuery.of(context).size.height / 2.5,
+                  child: ListView.builder(
+                    itemBuilder: (context, index) {},
+                  )),
               ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),

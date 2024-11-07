@@ -12,6 +12,10 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authentication = Get.put(Authentication());
     final profileController = Get.put(ProfileController());
+    TextEditingController name =
+        TextEditingController(text: profileController.user.value.Name);
+    TextEditingController password = TextEditingController();
+    TextEditingController repassword = TextEditingController();
     showEditNameDialog() {
       showDialog(
           context: context,
@@ -22,8 +26,9 @@ class AccountScreen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const TextField(
-                        decoration: InputDecoration(
+                      TextField(
+                        controller: name,
+                        decoration: const InputDecoration(
                             labelText: 'Tên người dùng',
                             border: OutlineInputBorder()),
                       ),
@@ -31,7 +36,13 @@ class AccountScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                await authentication.changeName(
+                                    name.text, context);
+                                if (context.mounted) {
+                                  Navigator.pop(context);
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue),
                               child: const Text(
@@ -85,7 +96,25 @@ class AccountScreen extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                if (password.text.isEmpty ||
+                                    repassword.text.isEmpty) {
+                                  const snackBar = SnackBar(
+                                      content: Text(
+                                          'Vui lòng nhập đầy đủ thông tin'));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                } else if (repassword.text != password.text) {
+                                  const snackBar = SnackBar(
+                                      content: Text(
+                                          'Nhập lại mật khẩu của bạn không đúng'));
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                } else {
+                                  authentication.changePassword(
+                                      password.text, context);
+                                }
+                              },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor: Colors.blue),
                               child: const Text(
@@ -198,8 +227,9 @@ class AccountScreen extends StatelessWidget {
                             );
                           } else {
                             return CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  profileController.user.value.Avatar),
+                              backgroundImage: MemoryImage(
+                                  profileController.displayImageFromBase64(
+                                      profileController.user.value.Avatar)),
                               minRadius: 50,
                               maxRadius: 100,
                             );
@@ -207,7 +237,7 @@ class AccountScreen extends StatelessWidget {
                         }),
                         ElevatedButton(
                             onPressed: () {
-                              onChangeAvatar();
+                              profileController.pickAndUploadImage(context);
                             },
                             style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.white,
@@ -318,13 +348,5 @@ class AccountScreen extends StatelessWidget {
                 );
               })),
         ));
-  }
-
-  Future<void> onChangeAvatar() async {
-    final ImagePicker picker = ImagePicker();
-    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      return;
-    }
   }
 }

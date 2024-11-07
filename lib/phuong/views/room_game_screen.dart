@@ -5,6 +5,7 @@ import 'package:dadd/phuong/models/room_model.dart';
 import 'package:dadd/phuong/models/topic_model.dart';
 import 'package:dadd/phuong/views/account_screen.dart';
 import 'package:dadd/phuong/views/room_template.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -16,6 +17,7 @@ class RoomGameScreen extends StatelessWidget {
     final TopicController topicController = Get.put(TopicController());
     final QuestionSetController questionSetController =
         Get.put(QuestionSetController());
+    final userID = FirebaseAuth.instance.currentUser!.uid;
     showSearchRoomDialog(BuildContext context) {
       showDialog(
           context: context,
@@ -130,10 +132,9 @@ class RoomGameScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  roomController.createRoom(
-                                      selectedTopic.ID,
-                                      dropdownQuantityValue,
-                                      'yOBUdZkydGWxK69Ktyf1');
+                                  roomController.createRoom(selectedTopic.ID,
+                                      dropdownQuantityValue, userID);
+                                  Navigator.of(context).pop();
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue),
@@ -191,7 +192,7 @@ class RoomGameScreen extends StatelessWidget {
                   child: Obx(() {
                     if (roomController.rooms.isEmpty) {
                       return const Center(
-                        child: Text('Không có dữ liệu'),
+                        child: Text('Không có phòng chơi nào'),
                       );
                     }
                     return ListView.builder(
@@ -200,11 +201,12 @@ class RoomGameScreen extends StatelessWidget {
                         RoomModel room = roomController.rooms[index];
                         return roomTemplate(
                             context,
+                            room.ID,
                             room.Code,
-                            3,
                             questionSetController
                                 .getQuantityQuestion(room.IDQuestionSet),
-                            topicController.getTopicName(room.IDTopic));
+                            topicController.getTopicName(room.IDTopic),
+                            room.IDOwner);
                       },
                     );
                   })),

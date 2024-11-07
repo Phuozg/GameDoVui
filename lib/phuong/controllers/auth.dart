@@ -1,5 +1,6 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dadd/login/admin_screen.dart';
+import 'package:dadd/phuong/controllers/profile_controller.dart';
 import 'package:dadd/phuong/views/welcome_screen.dart';
 import 'package:dadd/views/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,9 +23,17 @@ class Authentication extends GetxController {
   }
 
   _setInitScreen(User? user) {
-    user == null
-        ? Get.offAll(() => const WelcomeScreen())
-        : Get.offAll(() => const HomePage());
+    if (user == null) {
+      Get.offAll(() => const WelcomeScreen());
+    } else {
+      final profileController = Get.put(ProfileController());
+      profileController.fetchData();
+      if (profileController.user.value.Role == false) {
+        Get.offAll(() => const HomePage());
+      } else {
+        Get.offAll(() => AdminDashboard());
+      }
+    }
   }
 
   Future<void> registerUser(String name, String usernamse, String password,
@@ -41,7 +50,8 @@ class Authentication extends GetxController {
           'Name': name,
           'Avatar': '',
           'Exp': 0,
-          'CreatedAt': Timestamp.now()
+          'CreatedAt': Timestamp.now(),
+          'Role': false
         });
       }
       firebaseUser.value != null
@@ -69,6 +79,37 @@ class Authentication extends GetxController {
 
   Future<void> logout() async {
     await auth.signOut();
+  }
+
+  Future<void> changeName(String change, BuildContext context) async {
+    try {
+      final userID = auth.currentUser!.uid;
+      if (userID.isNotEmpty) {
+        await db.collection('User').doc(userID).update({'Name': change});
+      }
+      await ProfileController.instance.fetchData();
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
+
+  Future<void> changePassword(String change, BuildContext context) async {
+    try {
+      final userID = auth.currentUser!.uid;
+      if (userID.isNotEmpty) {
+        await auth.currentUser!.updatePassword(change);
+        await db.collection('User').doc(userID).update({'Password': change});
+      }
+      await ProfileController.instance.fetchData();
+    } catch (e) {
+      final snackBar = SnackBar(content: Text(e.toString()));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
   }
 
   signUpWithEmailAndPasswordFailure(String code) {
