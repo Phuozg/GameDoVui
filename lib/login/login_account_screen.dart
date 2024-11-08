@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:dadd/login/admin_screen.dart';
 import 'package:dadd/login/forgot_password_screen.dart';
 import 'package:dadd/login/register_screen.dart';
@@ -29,26 +31,55 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  //chuyển hướng người chơi
-  void _test() {
-    if (usernameController.text == 'player' &&
-        passwordController.text == '123') {
-      // Chuyển sang giao diện Admin
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()),
-      );
-    }
-  }
+  // Hàm kiểm tra đăng nhập
+  void _login() async {
+    String username = usernameController.text;
+    String password = passwordController.text;
 
-  void _login() {
-    if (usernameController.text == 'admin' &&
-        passwordController.text == '123') {
-      // Chuyển sang giao diện Admin
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => AdminDashboard()),
+    try {
+      // Truy vấn danh sách người dùng từ Firestore
+      QuerySnapshot snapshot = await _firestore.collection('User').get();
+
+      bool userFound = false;
+      for (var doc in snapshot.docs) {
+        // Tạo đối tượng UserModel từ dữ liệu Firestore
+        UserModel user =
+            UserModel.fromFirestore(doc.data() as Map<String, dynamic>);
+
+        // Kiểm tra nếu thông tin đăng nhập khớp
+        if (user.username == username && user.password == password) {
+          userFound = true;
+
+          // Kiểm tra role của người dùng
+          if (user.role) {
+            // Nếu Role == true, chuyển sang trang admin
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AdminDashboard()),
+            );
+          } else {
+            // Nếu Role == false, chuyển sang trang người dùng
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+            );
+          }
+          break;
+        }
+      }
+
+      // Nếu không tìm thấy người dùng
+      if (!userFound) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Thông tin đăng nhập không chính xác.')),
+        );
+      }
+    } catch (e) {
+      // Xử lý lỗi
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đã xảy ra lỗi: $e')),
       );
     }
   }
@@ -90,14 +121,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
+                      const Text(
                         'Đăng Nhập',
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
                             color: Colors.blue),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       TextField(
                         controller: usernameController,
                         decoration: InputDecoration(
@@ -145,13 +176,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               style: TextStyle(color: Colors.blue),
                             ),
                           ),
-                          IconButton(
-                            icon: Image.asset('assets/image/google_logo.png',
-                                height: 30), // Thay đổi link hình ảnh Google
-                            onPressed: () {
-                              // Đăng ký bằng Google
-                            },
-                          ),
                         ],
                       ),
                       SizedBox(height: 10),
@@ -184,22 +208,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: TextStyle(color: Colors.blue),
                         ),
                       ),
-
-                      /// nút test chuyển thẳng vào trang người dùng
-                      SizedBox(height: 10),
-                      ElevatedButton(
-                        onPressed: _test,
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: Colors.blue, // Màu chữ
-                          padding: EdgeInsets.symmetric(
-                              vertical: 15, horizontal: 30),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        child: Text('Test'),
-                      ),
                     ],
                   ),
                 ),
@@ -208,6 +216,27 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class UserModel {
+  String username;
+  String password;
+  bool role;
+
+  UserModel({
+    required this.username,
+    required this.password,
+    required this.role,
+  });
+
+  // Hàm tạo đối tượng từ dữ liệu trong Firestore
+  factory UserModel.fromFirestore(Map<String, dynamic> data) {
+    return UserModel(
+      username: data['UserName'] ?? '',
+      password: data['Password'] ?? '',
+      role: data['Role'] ?? false,
     );
   }
 }

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:uuid/uuid.dart'; // Sử dụng để tạo ID ngẫu nhiên
+import 'package:image_picker/image_picker.dart';
+import 'dart:convert';
+import 'dart:io';
 
 class AddUserScreen extends StatefulWidget {
   @override
@@ -7,12 +12,61 @@ class AddUserScreen extends StatefulWidget {
 
 class _AddUserScreenState extends State<AddUserScreen> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  String _email = '';
-  String _role = 'User'; // Default value for role
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final Uuid _uuid = Uuid();
+  final ImagePicker _picker = ImagePicker();
 
-  // List of roles
-  List<String> roles = ['User', 'Admin', 'Moderator'];
+  String _name = '';
+  String _userName = '';
+  String _role = 'User'; // Mặc định là 'User'
+  String _avatar = '';
+  String _password = '';
+  int _exp = 0;
+  bool role = false;
+
+  // Danh sách các vai trò
+  List<String> roles = ['User', 'Admin'];
+
+  // Hàm chọn ảnh từ bộ nhớ
+  Future<void> _pickImage() async {
+    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      // Đọc ảnh và chuyển thành chuỗi base64
+      final bytes = await File(image.path).readAsBytes();
+      setState(() {
+        _avatar = base64Encode(bytes);
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đã chọn ảnh đại diện thành công')),
+      );
+    }
+  }
+
+  // Hàm thêm người dùng vào Firestore
+  Future<void> addUser() async {
+    try {
+      if (_role == 'Admin') role = true; // Sửa lại phép gán
+      String id = _uuid.v4(); // Tạo ID ngẫu nhiên
+      await _firestore.collection('User').doc(id).set({
+        'ID': id,
+        'Name': _name,
+        'UserName': _userName,
+        'Exp': _exp,
+        'Role': role,
+        'Avatar': _avatar,
+        'Password': _password,
+        'CreateAt': Timestamp.now(),
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Người dùng đã được thêm thành công')),
+      );
+      _formKey.currentState!.reset(); // Reset form sau khi thêm
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Đã xảy ra lỗi khi thêm người dùng: $e')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,21 +95,46 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   return null;
                 },
               ),
-              // Email field
+              // UserName field
               TextFormField(
-                decoration: InputDecoration(labelText: 'Email'),
+                decoration: InputDecoration(labelText: 'Gmail đăng nhập'),
                 onChanged: (value) {
                   setState(() {
-                    _email = value;
+                    _userName = value;
                   });
                 },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return 'Vui lòng nhập email';
+                    return 'Vui lòng nhập tên đăng nhập';
                   }
                   return null;
                 },
               ),
+              // Password field
+              TextFormField(
+                decoration: const InputDecoration(labelText: 'Mật khẩu'),
+                obscureText: true,
+                onChanged: (value) {
+                  setState(() {
+                    _password = value;
+                  });
+                },
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Vui lòng nhập mật khẩu';
+                  }
+                  return null;
+                },
+              ),
+              // Button chọn ảnh đại diện
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Chọn ảnh đại diện từ bộ nhớ'),
+              ),
+              _avatar.isNotEmpty
+                  ? Text('Ảnh đã được chọn',
+                      style: TextStyle(color: Colors.green))
+                  : Text('Chưa chọn ảnh', style: TextStyle(color: Colors.red)),
               // Role field
               DropdownButtonFormField<String>(
                 decoration: InputDecoration(labelText: 'Chọn vai trò'),
@@ -72,15 +151,10 @@ class _AddUserScreenState extends State<AddUserScreen> {
                   });
                 },
               ),
-              // Submit button
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // Handle the form submission
-                    ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Đã thêm người dùng')));
-                    // Reset the form
-                    _formKey.currentState!.reset();
+                    addUser();
                   }
                 },
                 child: Text('Thêm người dùng'),
