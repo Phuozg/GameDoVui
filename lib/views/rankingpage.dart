@@ -34,44 +34,62 @@ class RankingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Bảng Xếp Hạng'),
-        centerTitle: true,
-        backgroundColor: Colors.blue,
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: rankingData.length,
-              itemBuilder: (context, index) {
-                final data = rankingData[index];
-                return ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.blue,
-                    child: Icon(
-                      data['icon'] ?? Icons.person,
-                      color: data['color'],
+        appBar: AppBar(
+          title: const Text('Bảng Xếp Hạng'),
+          centerTitle: true,
+          backgroundColor: Colors.blue,
+        ),
+        body: Container(
+            decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/image/background.jpg'),
+                    fit: BoxFit.cover)),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40.0), // Khoảng cách 2 bên trái phải
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 250),
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: rankingData.length,
+                            itemBuilder: (context, index) {
+                              final data = rankingData[index];
+                              return ListTile(
+                                leading: CircleAvatar(
+                                  backgroundColor: Colors.blue,
+                                  child: Icon(
+                                    data['icon'] ?? Icons.person,
+                                    color: data['color'],
+                                  ),
+                                ),
+                                title: Text(data['name'],
+                                    style: const TextStyle(fontSize: 16)),
+                                trailing: Text('${data['points']}pts',
+                                    style: const TextStyle(fontSize: 16)),
+                              );
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('Quay lại'),
+                          ),
+                        ),
+                        const SizedBox(height: 200)
+                      ],
                     ),
                   ),
-                  title: Text(data['name']),
-                  trailing: Text('${data['points']}pts'),
-                );
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton(
-              onPressed: () {
-                // Handle button press action
-                Navigator.pop(context);
-              },
-              child: const Text('Quay lại'),
-            ),
-          ),
-        ],
-      ),
-    );
+                ),
+              ],
+            )));
   }
 }

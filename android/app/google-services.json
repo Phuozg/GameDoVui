@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "251629544396",
+    "project_id": "gamedovui-daltdd",
+    "storage_bucket": "gamedovui-daltdd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:251629544396:android:1c8af09b008bbf4f1f3369",
+        "android_client_info": {
+          "package_name": "com.example.dadd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABIWvBOGYrt35JCdTj0IB147EmSIxJ3dc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
