@@ -2,7 +2,6 @@ import 'package:dadd/games/gameScreen/game_Sceen.dart';
 import 'package:dadd/views/homepage.dart';
 import 'package:flutter/material.dart';
 
-
 class trangcu_btn extends StatefulWidget {
   const trangcu_btn({super.key});
 
@@ -47,10 +46,8 @@ void _showConfirmationDialogTC(BuildContext context) {
           TextButton(
             child: Text("Có"),
             onPressed: () {
-              Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-            ); // Navigates back to home
+              Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
           ),
         ],
