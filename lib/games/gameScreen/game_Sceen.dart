@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dadd/games/gameController.dart';
 import 'package:dadd/games/gameScreen/btn_Home.dart';
+import 'package:dadd/games/gameScreen/clock.dart';
 import 'package:dadd/games/gameScreen/question.dart';
 import 'package:dadd/games/notification/rsOneScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -124,20 +125,21 @@ class _gameScreenState extends State<gameScreen> {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Container(
-                                      width: 60,
-                                      height: 60,
-                                      decoration: BoxDecoration(
-                                        color: Colors.amber,
-                                        shape:
-                                            BoxShape.circle, // Circular shape
-                                      ),
-                                      child: Text(time.toString(),
-                                          style: const TextStyle(
-                                              fontSize: 32,
-                                              fontWeight: FontWeight.bold,
-                                              decoration:
-                                                  TextDecoration.none))),
+                                  // Container(
+                                  //     width: 60,
+                                  //     height: 60,
+                                  //     decoration: BoxDecoration(
+                                  //       color: Colors.amber,
+                                  //       shape:
+                                  //           BoxShape.circle, // Circular shape
+                                  //     ),
+                                  //     child: Text(time.toString(),
+                                  //         style: const TextStyle(
+                                  //             fontSize: 32,
+                                  //             fontWeight: FontWeight.bold,
+                                  //             decoration:
+                                  //                 TextDecoration.none))),
+                                  cdTimer(),
                                   SizedBox(
                                     width: 20,
                                   )
