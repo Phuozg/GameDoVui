@@ -12,7 +12,7 @@ class ProfileController extends GetxController {
   static ProfileController get instance => Get.find();
 
   final db = FirebaseFirestore.instance;
-  final userID = FirebaseAuth.instance.currentUser!.uid;
+
   Rx<UserModel> user = UserModel.empty().obs;
   @override
   void onInit() {
@@ -21,6 +21,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> fetchData() async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
     DocumentSnapshot doc = await db.collection('User').doc(userID).get();
     if (doc.exists) {
       user.value = UserModel.fromFirestore(doc);
@@ -28,6 +29,7 @@ class ProfileController extends GetxController {
   }
 
   Future<void> pickAndUploadImage(BuildContext context) async {
+    final userID = FirebaseAuth.instance.currentUser!.uid;
     final ImagePicker picker = ImagePicker();
     try {
       final XFile? image = await picker.pickImage(source: ImageSource.gallery);

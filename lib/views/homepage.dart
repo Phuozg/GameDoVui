@@ -1,12 +1,14 @@
 import 'package:dadd/firebase_options.dart';
 import 'package:dadd/games/selectionScreen/chon_Screen.dart';
+import 'package:dadd/phuong/controllers/profile_controller.dart';
 import 'package:dadd/phuong/views/account_screen.dart';
+import 'package:dadd/phuong/views/room_game_screen.dart';
 import 'package:dadd/views/expContainer.dart';
 import 'package:dadd/views/friendpage.dart';
 import 'package:dadd/views/historypage.dart';
 import 'package:dadd/views/menubutton.dart';
 import 'package:dadd/views/rankingpage.dart';
-import 'package:dadd/phuong/views/room_game_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -44,7 +46,7 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const AccountScreen()));
+                      builder: (builder) => const AccountScreen()));
             },
             icon: const Icon(Icons.person),
           ),
@@ -52,14 +54,13 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: IconButton(
-                icon: const Icon(Icons.emoji_events),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RankingPage()),
-                  );
-                },
-              ),
+                  icon: const Icon(Icons.emoji_events),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RankingPage()),
+                    );
+                  }),
             ),
           ],
         ),
@@ -73,17 +74,15 @@ class HomePage extends StatelessWidget {
                 const EdgeInsets.symmetric(vertical: 20.0, horizontal: 15.0),
             child: Column(
               children: [
-                const Expcontainer(),
-                const SizedBox(height: 30),
-
+                Expcontainer(user: ProfileController().user.value),
+                const SizedBox(height: 150),
                 MenuButton(
                   text: 'Chơi Luyện Tập',
                   onPressed: () {
                     Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const slc_Screen()),
-                    );
+                        context,
+                        MaterialPageRoute(
+                            builder: (builder) => const slc_Screen()));
                   },
                 ),
                 MenuButton(
@@ -92,32 +91,29 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const RoomGameScreen()));
+                            builder: (builder) => const RoomGameScreen()));
                   },
                 ),
-                //MenuButton(text: 'Bạn Bè'),
                 MenuButton(
                   text: 'Bạn Bè',
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => FriendPage()),
+                      MaterialPageRoute(
+                          builder: (context) => FriendPage(
+                              userID: FirebaseAuth.instance.currentUser!.uid)),
                     );
                   },
                 ),
                 MenuButton(
                   text: 'Xem Lịch Sử Chơi',
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return Dialog(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: CustomDialogContent(),
-                          );
-                        });
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => Historypage(
+                              userID: FirebaseAuth.instance.currentUser!.uid)),
+                    );
                   },
                 ),
               ],

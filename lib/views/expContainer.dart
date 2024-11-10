@@ -1,7 +1,9 @@
+import 'package:dadd/phuong/models/user_model.dart';
 import 'package:flutter/material.dart';
 
 class Expcontainer extends StatelessWidget {
-  const Expcontainer({super.key});
+  Expcontainer({super.key, required this.user});
+  UserModel user;
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +51,19 @@ class Expcontainer extends StatelessWidget {
                             ),
                           ),
                         ),
-                        const Positioned(
+                        Positioned(
                           left: 15,
                           top: 3,
-                          child: Text('2'),
+                          child: Text('${user.Exp ~/ 1000}'),
                         ),
-                        const Positioned(
+                        Positioned(
                           right: 15,
                           top: 3,
-                          child: Text('3'),
+                          child: Text('${user.Exp ~/ 1000 + 1} '),
                         ),
-                        const Center(
+                        Center(
                           child: Text(
-                            '5200/6000',
+                            '${user.Exp}',
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                         ),

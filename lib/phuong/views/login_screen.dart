@@ -1,4 +1,5 @@
 import 'package:dadd/phuong/controllers/auth.dart';
+import 'package:dadd/phuong/views/forgot_password.dart';
 import 'package:dadd/phuong/views/register_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -80,7 +81,13 @@ class LoginScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const ForgotPassword()));
+                        },
                         child: const Text(
                           'Quên mật khẩu?',
                           style: TextStyle(color: Colors.black),
@@ -91,7 +98,9 @@ class LoginScreen extends StatelessWidget {
                   width: 50,
                   height: 50,
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        authentication.loginWithGoogle();
+                      },
                       icon: Image.asset(
                         'assets/image/google_logo.png',
                         fit: BoxFit.cover,

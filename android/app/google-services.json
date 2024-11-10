@@ -9,10 +9,23 @@
       "client_info": {
         "mobilesdk_app_id": "1:251629544396:android:1c8af09b008bbf4f1f3369",
         "android_client_info": {
-          "package_name": "com.example.dadd"
+          "package_name": "com.gamedovui.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "251629544396-h8i97ck97qrs77p0tso33v8f8eqn84ce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gamedovui.app",
+            "certificate_hash": "d7e86933b51949b1f1e4b44756845869543d69b5"
+          }
+        },
+        {
+          "client_id": "251629544396-aqrj1k8bpu5fnki27icvl8ghbpfu3go8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyABIWvBOGYrt35JCdTj0IB147EmSIxJ3dc"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "251629544396-aqrj1k8bpu5fnki27icvl8ghbpfu3go8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "251629544396-jau2v35bm4pttsgu3nmcssjvpq2udgmv.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.gamedovui.app"
+              }
+            }
+          ]
         }
       }
     }

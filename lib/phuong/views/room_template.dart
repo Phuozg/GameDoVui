@@ -3,23 +3,36 @@ import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dadd/phuong/controllers/room_controller.dart';
 import 'package:dadd/phuong/views/waiting_room_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 Widget roomTemplate(BuildContext context, String roomID, String roomName,
-    int quantityQuestion, String topic, String userIDOwner) {
+    int quantityQuestion, String topic, String userIDOwner,String questionSetID) {
   final roomController = Get.put(RoomController());
   int quantityPlayer = 0;
   return GestureDetector(
-    onTap: () {
+    onTap: () async {
       if (quantityPlayer < 4) {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (_) => WaitingRoomScreen(
-                    roomName: roomName,
-                    quantityQuestion: quantityQuestion,
-                    topic: topic,roomID: roomID,)));
+        try {
+          await roomController.addUserIntoRoom(
+              FirebaseAuth.instance.currentUser!.uid, roomID);
+          await roomController.fetchDataRoom(roomID);
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (_) => WaitingRoomScreen(
+                        roomName: roomName,
+                        quantityQuestion: quantityQuestion,
+                        topic: topic,
+                        roomID: roomID,
+                        idOwner: userIDOwner,
+                        questionSetID: questionSetID,
+                      )));
+        } catch (e) {
+          SnackBar snackBar = const SnackBar(content: Text('e'));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        }
       } else {
         SnackBar snackBar = const SnackBar(content: Text('Phòng đã đủ người'));
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -80,7 +93,7 @@ Widget roomTemplate(BuildContext context, String roomID, String roomName,
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               Text('Số lượng câu hỏi: $quantityQuestion'),
-              Text('Chủ đề: $topic')
+              Text('Chủ đề: $topic'),
             ],
           ),
         ],

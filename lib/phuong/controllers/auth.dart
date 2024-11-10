@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dadd/login/admin_screen.dart';
+import 'package:dadd/admin/user_screen.dart';
 import 'package:dadd/phuong/controllers/profile_controller.dart';
 import 'package:dadd/phuong/views/welcome_screen.dart';
 import 'package:dadd/views/homepage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class Authentication extends GetxController {
   static Authentication get instance => Get.put(Authentication());
@@ -13,7 +14,6 @@ class Authentication extends GetxController {
   final auth = FirebaseAuth.instance;
   final db = FirebaseFirestore.instance;
   late final Rx<User?> firebaseUser;
-
   @override
   void onReady() {
     Future.delayed(const Duration(seconds: 6));
@@ -22,16 +22,17 @@ class Authentication extends GetxController {
     ever(firebaseUser, _setInitScreen);
   }
 
-  _setInitScreen(User? user) {
+  _setInitScreen(User? user) async {
     if (user == null) {
       Get.offAll(() => const WelcomeScreen());
     } else {
       final profileController = Get.put(ProfileController());
-      profileController.fetchData();
+      await profileController.fetchData();
+      print(profileController.user.value.Role.toString());
       if (profileController.user.value.Role == false) {
         Get.offAll(() => const HomePage());
       } else {
-        Get.offAll(() => AdminDashboard());
+        Get.offAll(() => const UserScreen());
       }
     }
   }
@@ -109,6 +110,80 @@ class Authentication extends GetxController {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
+    }
+  }
+
+  Future<void> sendPasswordResetEmail(
+      BuildContext context, String email) async {
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      // Navigator.push(context,
+      //     MaterialPageRoute(builder: (context) => const ResetPasswordScreen()));
+      Navigator.of(context).pop();
+    } catch (error) {
+      final snackBar =
+          SnackBar(content: Text("Lỗi khi gửi email đặt lại mật khẩu: $error"));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
+
+  Future<void> resetPassword(
+      BuildContext context, String code, String newPassword) async {
+    try {
+      await FirebaseAuth.instance.confirmPasswordReset(
+        code: code,
+        newPassword: newPassword,
+      );
+      final userID = auth.currentUser!.uid;
+      await db.collection('User').doc(userID).update({'Password': newPassword});
+      const snackBar =
+          SnackBar(content: Text("Mật khẩu đã được đặt lại thành công!"));
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    } catch (error) {
+      print("Lỗi khi đặt lại mật khẩu: $error");
+    }
+  }
+
+  Future<void> loginWithGoogle() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn();
+    String username;
+    String name;
+    String uid;
+    try {
+      final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
+
+      if (googleUser == null) {
+        return null;
+      }
+
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      final AuthCredential credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      await auth.signInWithCredential(credential);
+      username = googleUser!.email;
+      name = googleUser.displayName.toString();
+      uid = auth.currentUser!.uid;
+      await db.collection('User').doc(uid).set({
+        'ID': uid,
+        'UserName': username,
+        'Password': '',
+        'Name': name,
+        'Exp': 0,
+        'Avatar': '',
+        'CreatedAt': Timestamp.now(),
+        'Role': false
+      });
+    } catch (e) {
+      print("Lỗi khi đăng nhập với Google: $e");
+      return null;
     }
   }
 

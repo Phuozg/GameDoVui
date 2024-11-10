@@ -23,4 +23,9 @@ class QuestionModel {
       return QuestionModel.empty();
     }
   }
+  factory QuestionModel.fromFirestore(DocumentSnapshot doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+    return QuestionModel(
+        ID: data['ID'], Content: data['Content'], IDTopic: data['IDTopic']);
+  }
 }

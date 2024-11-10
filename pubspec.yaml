@@ -15,6 +15,11 @@ dependencies:
   firebase_storage: ^12.3.4
   image_picker: ^1.1.2
   firebase_auth: ^5.3.1
+  google_sign_in: ^6.2.2
+  firebase_app_check: ^0.3.1+5
+  persistent_bottom_nav_bar: ^6.2.1
+  intl: ^0.19.0
+  flutter_launcher_icons: ^0.14.1
 
 dev_dependencies:
   flutter_test:
@@ -29,3 +34,8 @@ flutter:
     - assets/image/background2.png
     - assets/image/logo.png
     - assets/image/google_logo.png
+
+
+flutter_icons:
+  android: true
+  image_path: "assets/icon/icon_app.png"

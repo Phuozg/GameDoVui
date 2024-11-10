@@ -1,24 +1,25 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dadd/games/gameController.dart';
 import 'package:dadd/games/gameScreen/btn_Home.dart';
 import 'package:dadd/games/gameScreen/question.dart';
-import 'package:dadd/games/notification/rsOneScreen.dart';
+import 'package:dadd/phuong/controllers/room_controller.dart';
+import 'package:dadd/phuong/models/question_model.dart';
+import 'package:dadd/phuong/views/result_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
-class gameScreen extends StatefulWidget {
-  gameScreen(
+class GameScreen extends StatefulWidget {
+  const GameScreen(
       {super.key,
       required this.questions,
       required this.questionSetID,
-      required this.created});
-  final List<Question> questions;
+      required this.roomID});
+  final List<QuestionModel> questions;
   final String questionSetID;
-  final Timestamp created;
-
+  final String roomID;
   @override
-  State<gameScreen> createState() => _gameScreenState();
+  State<GameScreen> createState() => _gameScreenState();
 }
 
 class OptionModel {
@@ -41,7 +42,7 @@ class OptionModel {
   }
 }
 
-class _gameScreenState extends State<gameScreen> {
+class _gameScreenState extends State<GameScreen> {
   PageController _pageController = PageController();
   int _currentQuestionIndex = 0;
   int _score = 0;
@@ -94,19 +95,20 @@ class _gameScreenState extends State<gameScreen> {
       _timerStreamController.add(_time);
     } else {
       try {
-        GameController().createGame(
+        RoomController().createGame(
             context,
             _score,
-            FirebaseAuth.instance.currentUser?.uid ?? '',
+            FirebaseAuth.instance.currentUser!.uid,
             widget.questionSetID,
-            widget.created);
+            Timestamp.now());
+        RoomController().changeStatusPlayer(
+            FirebaseAuth.instance.currentUser!.uid, widget.roomID);
         Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-                builder: (context) => rsOnescreen(
-                      topicID: widget.questions[0].IDTopic,
-                      score: _score,
-                      quantity: widget.questions.length,
+                builder: (context) => Result(
+                      roomID: widget.roomID,
+                      questionSetID: widget.questionSetID,
                     )));
       } catch (e) {
         print("Error: $e");
@@ -142,7 +144,7 @@ class _gameScreenState extends State<gameScreen> {
             physics: const NeverScrollableScrollPhysics(),
             itemCount: widget.questions.length,
             itemBuilder: (context, index) {
-              Question question = widget.questions[index];
+              QuestionModel question = widget.questions[index];
               return Padding(
                   padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
                   child: Column(
@@ -208,7 +210,7 @@ class _gameScreenState extends State<gameScreen> {
                             height: 400,
                             width: MediaQuery.of(context).size.width * 0.9,
                             child: FutureBuilder<List<OptionModel>>(
-                              future: GameController().getOptions(question.ID),
+                              future: RoomController().getOptions(question.ID),
                               builder: (context, snapshot) {
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
@@ -286,4 +288,3 @@ class _gameScreenState extends State<gameScreen> {
     );
   }
 }
-  

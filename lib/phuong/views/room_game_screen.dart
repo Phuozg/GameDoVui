@@ -132,9 +132,11 @@ class RoomGameScreen extends StatelessWidget {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
-                                  roomController.createRoom(selectedTopic.ID,
-                                      dropdownQuantityValue, userID);
-                                  Navigator.of(context).pop();
+                                  roomController.createRoom(
+                                      context,
+                                      selectedTopic.ID,
+                                      dropdownQuantityValue,
+                                      userID);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     backgroundColor: Colors.blue),
@@ -206,7 +208,8 @@ class RoomGameScreen extends StatelessWidget {
                             questionSetController
                                 .getQuantityQuestion(room.IDQuestionSet),
                             topicController.getTopicName(room.IDTopic),
-                            room.IDOwner);
+                            room.IDOwner,
+                            room.IDQuestionSet);
                       },
                     );
                   })),

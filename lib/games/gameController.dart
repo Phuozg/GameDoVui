@@ -32,22 +32,13 @@ class GameController {
       for (var doc in selectedDocs) {
         questions.add(Question.fromFirestore(doc));
       }
-
-      //Tạo phòng chơi đơn
-      await database.collection('Room').doc(roomID).set({
-        'ID': roomID,
-        'Code': roomID.substring(roomID.length - 6),
-        'IDTopic': IDTopic,
-        'IDQuestionSet': questionSetID,
-        'IDOwner': IDUser,
-        'Status': false
-      });
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (context) => gameScreen(
                     questions: questions,
                     questionSetID: questionSetID,
+                    created: Timestamp.now(),
                   )));
     } catch (e) {
       print('Lỗi khi thêm dữ liệu: $e');
@@ -82,7 +73,7 @@ class GameController {
   }
 
   void createGame(BuildContext context, int score, String IDUser,
-      String IDQuestionSet) async {
+      String IDQuestionSet, Timestamp created) async {
     try {
       //Tạo bộ đề
       await database.collection('Game').add({
@@ -90,7 +81,7 @@ class GameController {
         'Point': score,
         'IDUser': IDUser,
         'GameType': 'Single',
-        'CreatedAt': Timestamp.now(),
+        'CreatedAt': created,
         'CompletedAt': Timestamp.now()
       });
     } catch (e) {

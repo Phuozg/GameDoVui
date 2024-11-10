@@ -3,7 +3,6 @@ import 'package:dadd/phuong/controllers/profile_controller.dart';
 import 'package:dadd/views/expContainer.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:image_picker/image_picker.dart';
 
 class AccountScreen extends StatelessWidget {
   const AccountScreen({super.key});
@@ -12,6 +11,7 @@ class AccountScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authentication = Get.put(Authentication());
     final profileController = Get.put(ProfileController());
+    profileController.fetchData();
     TextEditingController name =
         TextEditingController(text: profileController.user.value.Name);
     TextEditingController password = TextEditingController();
@@ -214,7 +214,9 @@ class AccountScreen extends StatelessWidget {
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Expcontainer(),
+                    Expcontainer(
+                      user: profileController.user.value,
+                    ),
                     Column(
                       children: [
                         Builder(builder: (context) {
@@ -293,7 +295,8 @@ class AccountScreen extends StatelessWidget {
                                 style: TextStyle(color: Colors.grey),
                               ),
                               Text(
-                                profileController.user.value.UserName,
+                                truncateText(
+                                    profileController.user.value.UserName),
                                 style: const TextStyle(fontSize: 20),
                               )
                             ],
@@ -348,5 +351,13 @@ class AccountScreen extends StatelessWidget {
                 );
               })),
         ));
+  }
+
+  String truncateText(String text) {
+    if (text.length > 20) {
+      return '${text.substring(0, 20)}...';
+    } else {
+      return text;
+    }
   }
 }
