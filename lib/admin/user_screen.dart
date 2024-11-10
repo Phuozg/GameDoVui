@@ -1,8 +1,8 @@
 import 'package:dadd/admin/controller.dart';
 import 'package:dadd/admin/question_screen.dart';
 import 'package:dadd/admin/topic_screen.dart';
-import 'package:dadd/views/account_screen.dart';
 
+import 'package:dadd/views/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
@@ -42,6 +42,8 @@ class _UserScreenState extends State<UserScreen> {
                         children: [
                           ElevatedButton(
                               onPressed: () {
+                                //Chọn xác nhận sẽ gọi hàm DeleteUser được viết ở controller để xóa user có userID được truyền vào.
+                                //Sau đó gọi thêm hàm getUsers để load lại dữ liệu mới sau khi đã xóa user vừa rồi
                                 try {
                                   setState(() {
                                     Controller().deleteUser(userID);
@@ -108,7 +110,9 @@ class _UserScreenState extends State<UserScreen> {
                       color: Colors.white,
                       child: TextField(
                         controller: exp,
+                        //keyboardType để khi nhấn vào nhập kinh nghiệm điện thoại sẽ chỉ hiện thị bàn phím số (Không cho nhập chữ ở kinh nghiệm)
                         keyboardType: TextInputType.number,
+                        //Vì bàn phím số vẫn có dấu chấm và phẩy nên thêm inputFormatters để không cho nhấn 2 nút này
                         inputFormatters: <TextInputFormatter>[
                           FilteringTextInputFormatter.digitsOnly
                         ],
@@ -122,6 +126,8 @@ class _UserScreenState extends State<UserScreen> {
                       children: [
                         ElevatedButton(
                             onPressed: () {
+                              //Khi nhấn xác nhận sẽ gọi hàm editUser ở controller để cập nhật lại dữ liệu user
+                              //Sau đó gọi hàm getUsers để cập nhật dữ liệu mới sau khi thay đổi thông tin user
                               try {
                                 setState(() {
                                   Controller().editUser(
@@ -156,6 +162,7 @@ class _UserScreenState extends State<UserScreen> {
           });
     }
 
+    //Vì có trường hợp chuyển màn hình mà vẫn chưa load dữ liệu nên gọi 3 hàm getTopics getQuestion getUsers để chắc chắn rằng dữ liệu sẽ được gọi
     Controller().getTopics();
     Controller().getQuestion();
     Controller().getUsers();
@@ -211,6 +218,8 @@ class _UserScreenState extends State<UserScreen> {
                               padding: const EdgeInsets.all(8),
                               child: Row(
                                 children: [
+                                  // user.Avatar.isEmpty -> User không có dữ liệu avatar thì sẽ hiển thị avatar mặc định lưu ở assets
+                                  // ngược lại -> user có dữ liệu avatar thì sẽ gọi hàm displayImageFromBase64 (hàm này sẽ chuyển dữ liệu avatar từ dạng String base64 về dạng mà MemoryImage có thể hiển thị hình ảnh)
                                   Builder(builder: (context) {
                                     if (user.Avatar.isEmpty) {
                                       return const CircleAvatar(
@@ -250,6 +259,7 @@ class _UserScreenState extends State<UserScreen> {
                                     children: [
                                       IconButton(
                                         onPressed: () {
+                                          // gọi hàm đã viết phía trên -> hiển thị dialog sửa thông tin
                                           showEditDialog(user);
                                         },
                                         icon: Icon(
@@ -259,6 +269,7 @@ class _UserScreenState extends State<UserScreen> {
                                       ),
                                       IconButton(
                                         onPressed: () {
+                                          // gọi hàm đã viết phía trên ->xóa user
                                           showDeleteDialog(user.ID);
                                         },
                                         icon: Icon(

@@ -44,6 +44,7 @@ class _TopicScreenState extends State<TopicScreen> {
                             onPressed: () {
                               try {
                                 setState(() {
+                                  //Giải thích tương tự như file user_screen.dart
                                   Controller().addTopic(topicText.text);
                                   Controller().getTopics();
                                 });
@@ -102,6 +103,7 @@ class _TopicScreenState extends State<TopicScreen> {
                               onPressed: () {
                                 try {
                                   setState(() {
+                                    //Giải thích tương tự như file user_screen.dart
                                     Controller().deleteTopic(topicID);
                                     Controller().getTopics();
                                   });
@@ -164,6 +166,7 @@ class _TopicScreenState extends State<TopicScreen> {
                             onPressed: () {
                               try {
                                 setState(() {
+                                  //Giải thích tương tự như file user_screen.dart
                                   Controller()
                                       .editTopic(topicText.text, topicID);
                                   Controller().getTopics();
@@ -278,6 +281,7 @@ class _TopicScreenState extends State<TopicScreen> {
                                       children: [
                                         IconButton(
                                           onPressed: () {
+                                            //Giải thích tương tự như file user_screen.dart
                                             showEditDialog(topic.ID);
                                           },
                                           icon: Icon(
@@ -287,6 +291,7 @@ class _TopicScreenState extends State<TopicScreen> {
                                         ),
                                         IconButton(
                                           onPressed: () {
+                                            //Giải thích tương tự như file user_screen.dart
                                             showDeleteDialog(topic.ID);
                                           },
                                           icon: Icon(

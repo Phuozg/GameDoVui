@@ -2,7 +2,8 @@ import 'dart:math';
 
 import 'package:dadd/admin/controller.dart';
 import 'package:dadd/admin/detail_screen.dart';
-import 'package:dadd/phuong/views/account_screen.dart';
+
+import 'package:dadd/views/account_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -69,6 +70,9 @@ class QuestionScreenState extends State<QuestionScreen> {
                           children: [
                             ElevatedButton(
                                 onPressed: () {
+                                  //tạo question mới cần gọi hàm generateRandomString để tạo mội chuỗi 20 ký tự ngẫu nhiên làm ID
+                                  //có id rồi thì bỏ vào hàm addQuestion để tạo question mới có id vừa tạo
+                                  // khác với các chức năng ở màn hình khác, thì sau khi tạo question mới sẽ không quay về hiển thị danh sách câu hỏi, mà sẽ vào màn hình chi tiết câu hỏi đó để thêm dữ liệu cho các option của câu hỏi vừa được tạo
                                   final questionID = generateRandomString();
                                   setState(() {
                                     controller.addQuestion(content.text,
